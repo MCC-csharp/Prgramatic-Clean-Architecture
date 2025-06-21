@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Bookify.Domain.Bookings;
+using Microsoft.Extensions.DependencyInjection;
 
 
 namespace Bookify.Application

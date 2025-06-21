@@ -47,6 +47,19 @@
         "build": {
           "buildTransitive/net6.0/_._": {}
         }
+      },
+      "Bookify.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "MediatR.Contracts": "2.0.1"
+        },
+        "compile": {
+          "bin/placeholder/Bookify.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Bookify.Domain.dll": {}
+        }
       }
     }
   },
@@ -113,10 +126,16 @@
         "microsoft.extensions.dependencyinjection.abstractions.nuspec",
         "useSharedDesignerContext.txt"
       ]
+    },
+    "Bookify.Domain/1.0.0": {
+      "type": "project",
+      "path": "../Bookify.Domain/Bookify.Domain.csproj",
+      "msbuildProject": "../Bookify.Domain/Bookify.Domain.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
+      "Bookify.Domain >= 1.0.0",
       "MediatR >= 12.5.0"
     ]
   },
@@ -151,7 +170,11 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\couch\\source\\repos\\Prgramatic-Clean-Architecture\\Bookify\\Bookify.Domain\\Bookify.Domain.csproj": {
+              "projectPath": "C:\\Users\\couch\\source\\repos\\Prgramatic-Clean-Architecture\\Bookify\\Bookify.Domain\\Bookify.Domain.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

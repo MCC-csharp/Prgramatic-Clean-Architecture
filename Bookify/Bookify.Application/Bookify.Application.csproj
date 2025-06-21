@@ -10,4 +10,8 @@
     <PackageReference Include="MediatR" Version="12.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Bookify.Domain\Bookify.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

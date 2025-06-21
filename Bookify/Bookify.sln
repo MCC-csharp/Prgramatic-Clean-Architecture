@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.13.35825.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bookify.Application", "Bookify.Application\Bookify.Application.csproj", "{71845A75-08CF-4B4C-93E6-5A4EC0307A04}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DCEB8F56-B356-4A08-8F31-E09C3EECCB8C} = {DCEB8F56-B356-4A08-8F31-E09C3EECCB8C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bookify.Domain", "Bookify.Domain\Bookify.Domain.csproj", "{DCEB8F56-B356-4A08-8F31-E09C3EECCB8C}"
 EndProject
