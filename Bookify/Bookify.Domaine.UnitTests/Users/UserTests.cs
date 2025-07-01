@@ -36,5 +36,6 @@ namespace Bookify.Domaine.UnitTests.Users
             domainEvent.Should().NotBeNull();
             domainEvent.UserId.Should().Be(user.Id);
         }
+
     }
 }
