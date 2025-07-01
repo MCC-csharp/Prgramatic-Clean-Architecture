@@ -4,14 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Bookify.Infrastructure.Repositories
 {
-    internal class Repository<T> where T: Entity
+    internal class Repository<T>(ApplicationDBContext dbContext) where T: Entity
     {
-        protected readonly ApplicationDBContext DBContext;
-
-        public Repository(ApplicationDBContext dbContext)
-        {
-            DBContext = dbContext;
-        }
+        protected readonly ApplicationDBContext DBContext = dbContext;
 
         public async Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken) 
             =>  await DBContext

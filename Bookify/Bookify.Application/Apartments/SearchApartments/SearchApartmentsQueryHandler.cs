@@ -11,19 +11,14 @@ using System.Threading.Tasks;
 
 namespace Bookify.Application.Apartments.SearchApartments
 {
-    internal sealed class SearchApartmentsQueryHandler : IQueryHandler<SearchApartmentsQuery, IReadOnlyList<ApartmentResponse>>
+    internal sealed class SearchApartmentsQueryHandler(ISqlConnectionFactory sqlConnectionFactory) : IQueryHandler<SearchApartmentsQuery, IReadOnlyList<ApartmentResponse>>
     {
         private readonly int[] ActiveBookingStatuses = {
             (int)BookingStatus.Reserved,
             (int)BookingStatus.Confirmed,
             (int)BookingStatus.Completed};
 
-        private readonly ISqlConnectionFactory _sqlConnectionFactory;
-
-        public SearchApartmentsQueryHandler(ISqlConnectionFactory sqlConnectionFactory)
-        {
-            _sqlConnectionFactory = sqlConnectionFactory;
-        }
+        private readonly ISqlConnectionFactory _sqlConnectionFactory = sqlConnectionFactory;
 
         public async Task<Result<IReadOnlyList<ApartmentResponse>>> Handle(SearchApartmentsQuery request, CancellationToken cancellationToken)
         {

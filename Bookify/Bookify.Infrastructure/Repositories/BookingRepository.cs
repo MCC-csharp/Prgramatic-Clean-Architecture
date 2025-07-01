@@ -9,12 +9,8 @@ using System.Threading.Tasks;
 
 namespace Bookify.Infrastructure.Repositories
 {
-    internal sealed class BookingRepository : Repository<Booking>, IBookingRepository
+    internal sealed class BookingRepository(ApplicationDBContext dbContext) : Repository<Booking>(dbContext), IBookingRepository
     {
-        public BookingRepository(ApplicationDBContext dbContext) : base(dbContext)
-        {
-        }
-
         private static readonly BookingStatus[] ActiveBookingStatuses =
         {
             BookingStatus.Reserved,

@@ -7,30 +7,20 @@ using Bookify.Domain.Users;
 
 namespace Bookify.Application.Bookings.ReserveBooking
 {
-    internal sealed class ReserveBookingCommandHandler : ICommandHandler<ReserveBookingCommand, Guid>
+    internal sealed class ReserveBookingCommandHandler(
+        IUserRepository userRepository,
+        IApartmentRepository apartmentRepository,
+        IBookingRepository bookingRepository,
+        IUnitOfWork unitOfWork,
+        PricingService pricingService,
+        IDateTimeProvider dateTimeProvider) : ICommandHandler<ReserveBookingCommand, Guid>
     {
-        private readonly IUserRepository _userRepository;
-        private readonly IApartmentRepository _apartmentRepository;
-        private readonly IBookingRepository _bookingRepository;
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly PricingService _pricingService;
-        private readonly IDateTimeProvider _dateTimeProvider;
-
-        public ReserveBookingCommandHandler(
-            IUserRepository userRepository,
-            IApartmentRepository apartmentRepository,
-            IBookingRepository bookingRepository,
-            IUnitOfWork unitOfWork,
-            PricingService pricingService,
-            IDateTimeProvider dateTimeProvider)
-        {
-            _userRepository = userRepository;
-            _apartmentRepository = apartmentRepository;
-            _bookingRepository = bookingRepository;
-            _unitOfWork = unitOfWork;
-            _pricingService = pricingService;
-            _dateTimeProvider = dateTimeProvider;
-        }
+        private readonly IUserRepository _userRepository = userRepository;
+        private readonly IApartmentRepository _apartmentRepository = apartmentRepository;
+        private readonly IBookingRepository _bookingRepository = bookingRepository;
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
+        private readonly PricingService _pricingService = pricingService;
+        private readonly IDateTimeProvider _dateTimeProvider = dateTimeProvider;
 
         public async Task<Result<Guid>> Handle(ReserveBookingCommand request, CancellationToken cancellationToken)
         {

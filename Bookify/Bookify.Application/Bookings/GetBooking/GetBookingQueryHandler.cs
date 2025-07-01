@@ -8,14 +8,9 @@ using Dapper;
 
 namespace Bookify.Application.Bookings.GetBooking
 {
-    internal sealed class GetBookingQueryHandler : IQueryHandler<GetBookingQuery, BookingResponse>
+    internal sealed class GetBookingQueryHandler(ISqlConnectionFactory sqlConnectionFactory) : IQueryHandler<GetBookingQuery, BookingResponse>
     {
-        private readonly ISqlConnectionFactory _sqlConnectionFactory;
-
-        public GetBookingQueryHandler(ISqlConnectionFactory sqlConnectionFactory)
-        {
-            _sqlConnectionFactory = sqlConnectionFactory;
-        }
+        private readonly ISqlConnectionFactory _sqlConnectionFactory = sqlConnectionFactory;
 
         public async Task<Result<BookingResponse>> Handle(GetBookingQuery request, CancellationToken cancellationToken)
         {
