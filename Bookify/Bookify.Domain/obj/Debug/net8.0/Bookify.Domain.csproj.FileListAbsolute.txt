@@ -1,0 +1,13 @@
+C:\Users\couch\source\repos\Prgramatic-Clean-Architecture\Bookify\Bookify.Domain\bin\Debug\net8.0\Bookify.Domain.deps.json
+C:\Users\couch\source\repos\Prgramatic-Clean-Architecture\Bookify\Bookify.Domain\bin\Debug\net8.0\Bookify.Domain.dll
+C:\Users\couch\source\repos\Prgramatic-Clean-Architecture\Bookify\Bookify.Domain\bin\Debug\net8.0\Bookify.Domain.pdb
+C:\Users\couch\source\repos\Prgramatic-Clean-Architecture\Bookify\Bookify.Domain\obj\Debug\net8.0\Bookify.Domain.csproj.AssemblyReference.cache
+C:\Users\couch\source\repos\Prgramatic-Clean-Architecture\Bookify\Bookify.Domain\obj\Debug\net8.0\Bookify.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\couch\source\repos\Prgramatic-Clean-Architecture\Bookify\Bookify.Domain\obj\Debug\net8.0\Bookify.Domain.AssemblyInfoInputs.cache
+C:\Users\couch\source\repos\Prgramatic-Clean-Architecture\Bookify\Bookify.Domain\obj\Debug\net8.0\Bookify.Domain.AssemblyInfo.cs
+C:\Users\couch\source\repos\Prgramatic-Clean-Architecture\Bookify\Bookify.Domain\obj\Debug\net8.0\Bookify.Domain.csproj.CoreCompileInputs.cache
+C:\Users\couch\source\repos\Prgramatic-Clean-Architecture\Bookify\Bookify.Domain\obj\Debug\net8.0\Bookify.Domain.sourcelink.json
+C:\Users\couch\source\repos\Prgramatic-Clean-Architecture\Bookify\Bookify.Domain\obj\Debug\net8.0\Bookify.Domain.dll
+C:\Users\couch\source\repos\Prgramatic-Clean-Architecture\Bookify\Bookify.Domain\obj\Debug\net8.0\refint\Bookify.Domain.dll
+C:\Users\couch\source\repos\Prgramatic-Clean-Architecture\Bookify\Bookify.Domain\obj\Debug\net8.0\Bookify.Domain.pdb
+C:\Users\couch\source\repos\Prgramatic-Clean-Architecture\Bookify\Bookify.Domain\obj\Debug\net8.0\ref\Bookify.Domain.dll
