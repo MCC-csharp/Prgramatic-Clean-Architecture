@@ -1,0 +1,30 @@
+﻿name: .NET Build & Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 🔄 Cloner le repo
+      uses: actions/checkout@v3
+
+    - name: 🧰 Installer .NET SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: 📦 Restaurer les dépendances
+      run: dotnet restore
+
+    - name: 🏗️ Build du projet
+      run: dotnet build --no-restore --configuration Release
+
+    - name: 🧪 Lancer les tests
+      run: dotnet test --no-build --configuration Release --verbosity normal
