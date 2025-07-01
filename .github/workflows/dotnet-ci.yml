@@ -21,10 +21,10 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: 📦 Restaurer les dépendances
-      run: dotnet restore
+      run: dotnet restore Bookify/Bookify.sln
 
     - name: 🏗️ Build du projet
-      run: dotnet build --no-restore --configuration Release
+      run: dotnet build Bookify/Bookify.sln --no-restore --configuration Release
 
     - name: 🧪 Lancer les tests
-      run: dotnet test --no-build --configuration Release --verbosity normal
+      run: dotnet test Bookify/Bookify.sln --no-build --configuration Release --verbosity normal
