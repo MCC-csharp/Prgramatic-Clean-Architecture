@@ -1,12 +1,10 @@
 ﻿using Bookify.Application.Abstractions.Data;
 using Bookify.Application.Abstractions.Messaging;
 using Bookify.Domain.Abstractions;
+using Bookify.Domain.Bookings;
+using Bookify.Domain.Users;
 using Dapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Bookify.Application.Bookings.GetBooking
 {
@@ -44,6 +42,13 @@ namespace Bookify.Application.Bookings.GetBooking
                 """;
 
             var booking = await connection.QueryFirstOrDefaultAsync<BookingResponse>(sql, new { request.BookingId });
+            
+            if (booking is null)
+            {
+                return Result.Failure <BookingResponse> (BookingErrors.NotFound);
+            }
+
+            return booking;
         }
     }
 }

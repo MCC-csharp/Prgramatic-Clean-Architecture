@@ -8,10 +8,10 @@ namespace Bookify.Application.Apartments.SearchApartments
 {
     public sealed class AddressResponse
     {
-        public string Country { get; init; }
-        public string City { get; init; }
-        public string Street { get; init; }
-        public string ZipCode { get; init; }
-        public string State { get; init; }
+        public required string Country { get; init; }
+        public required string City { get; init; }
+        public required string Street { get; init; }
+        public required string ZipCode { get; init; }
+        public required string State { get; init; }
     }
 }

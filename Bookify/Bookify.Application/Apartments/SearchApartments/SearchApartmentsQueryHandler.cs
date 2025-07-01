@@ -14,9 +14,9 @@ namespace Bookify.Application.Apartments.SearchApartments
     internal sealed class SearchApartmentsQueryHandler : IQueryHandler<SearchApartmentsQuery, IReadOnlyList<ApartmentResponse>>
     {
         private readonly int[] ActiveBookingStatuses = {
-        (int)BookingStatus.Reserved,
-        (int)BookingStatus.Confirmed,
-        (int)BookingStatus.Completed};
+            (int)BookingStatus.Reserved,
+            (int)BookingStatus.Confirmed,
+            (int)BookingStatus.Completed};
 
         private readonly ISqlConnectionFactory _sqlConnectionFactory;
 
@@ -35,36 +35,50 @@ namespace Bookify.Application.Apartments.SearchApartments
             using var connection = _sqlConnectionFactory.CreateConnection();
 
             const string sql = """
-                SELECT
-                    a.id AS Id,
-                    a.name AS Name,
-                    a.description AS Description,
-                    a.price_amount AS Price,
-                    a.price_currency AS Currency,
-                    a.address_country AS Country,
-                    a.address_state AS State,
-                    a.address_zip_code AS ZipCode
-                    a.address_city AS City,
-                    a.address_street AS Street
-                FROM apartments AS a
-                WHERE NOT EXISTS (
-                    SELECT 1
-                    FROM bookings AS b
-                    WHERE 
-                        b.apartment_id = a.id AND
-                        b.duration_start <= @EndDate AND
-                        b.duration_end >= @StartDate AND
-                        b.status = ANY(@ActiveBookingStatuses)
-                )
-                """;
+                    SELECT
+                        a.id AS Id,
+                        a.name AS Name,
+                        a.description AS Description,
+                        a.price_amount AS Price,
+                        a.price_currency AS Currency,
+                        a.address_country AS Country,
+                        a.address_state AS State,
+                        a.address_zip_code AS ZipCode,
+                        a.address_city AS City,
+                        a.address_street AS Street
+                    FROM apartments AS a
+                    WHERE NOT EXISTS (
+                        SELECT 1
+                        FROM bookings AS b
+                        WHERE 
+                            b.apartment_id = a.id AND
+                            b.duration_start <= @EndDate AND
+                            b.duration_end >= @StartDate AND
+                            b.status = ANY(@ActiveBookingStatuses)
+                    )
+                    """;
 
             var apartments = await connection
                 .QueryAsync<ApartmentResponse, AddressResponse, ApartmentResponse>(
                     sql,
                     (apartment, address) =>
                     {
-                        apartment.Address = address;
-                        return apartment;
+                        return new ApartmentResponse
+                        {
+                            Id = apartment.Id,
+                            Name = apartment.Name,
+                            Description = apartment.Description,
+                            Price = apartment.Price,
+                            Currency = apartment.Currency,
+                            Address = new AddressResponse
+                            {
+                                Country = address.Country,
+                                City = address.City,
+                                Street = address.Street,
+                                ZipCode = address.ZipCode,
+                                State = address.State
+                            }
+                        };
                     },
                     new
                     {
