@@ -1,5 +1,48 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
+﻿# .NET build artifacts
+bin/
+obj/
+out/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
 
-/Bookify/Bookify.sln
+# Visual Studio files
+.vs/
+*.vscode/
+*.dbmdl
+*.pdb
+*.cache
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Docker volumes and containers
+.containers/
+.files/
+
+# Environment files
+.env
+*.env
+
+# NuGet packages
+*.nupkg
+*.snupkg
+packages/
+.nuget/
+
+# Rider files
+.idea/
+
+# Test results
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+# Others
+*.swp
+*.bak
+*.tmp
