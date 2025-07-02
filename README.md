@@ -20,7 +20,11 @@ Ce projet est le fruit de la formation de Milan Jovanović sur l’architecture 
 - MediatR (CQRS)
 - FluentValidation
 - Entity Framework Core (si utilisé)
-- xUnit / NUnit (à venir)
+- xUnit
+- Bogus
+- Dapper
+- Docker compose
+- Swagger
 
 ---
 
@@ -31,5 +35,6 @@ Ce projet est le fruit de la formation de Milan Jovanović sur l’architecture 
  ┣ 📂 Application          # Use cases, interfaces
  ┣ 📂 Domain               # Entités métier
  ┣ 📂 Infrastructure       # Accès aux données, services extérieurs
- ┣ 📂 WebAPI               # Présentation (Controllers)
- ┗ 📂 Tests                # Tests unitaires (à venir)
+ ┣ 📂 Api                  # Présentation (Controllers)
+ ┗ 📂 UnitTests            # Tests unitaires
+
