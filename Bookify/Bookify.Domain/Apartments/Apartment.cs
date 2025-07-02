@@ -23,6 +23,11 @@ public sealed class Apartment : Entity
         Amenities = amenities;
     }
 
+    private Apartment()
+    {
+        // For EF Core
+    }
+
     public Name Name { get; private set; }
 
     public Description Description { get; private set; }

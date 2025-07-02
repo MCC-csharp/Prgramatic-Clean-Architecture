@@ -13,6 +13,11 @@ public sealed class User : Entity
         Email = email;
     }
 
+    private User()
+    {
+        // For EF Core
+    }
+
     public FirstName FirstName { get; private set; }
 
     public LastName LastName { get; private set; }
