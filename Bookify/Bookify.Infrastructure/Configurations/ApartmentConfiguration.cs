@@ -39,6 +39,9 @@ namespace Bookify.Infrastructure.Configurations
                 priceBuilder.Property(money => money.Currency)
                 .HasConversion(currency => currency.Code, code => Currency.FromCode(code));
             });
+
+            // Optimistic concurrency control, we can't use the user id nor the booking as control so we use the appartment inside booking
+            builder.Property<uint>("Version").IsRowVersion();
         }
     }
 }
