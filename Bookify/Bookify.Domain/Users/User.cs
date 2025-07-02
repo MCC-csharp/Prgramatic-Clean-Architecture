@@ -21,6 +21,7 @@ public sealed class User : Entity
     public FirstName FirstName { get; private set; }
 
     public LastName LastName { get; private set; }
+    public string UserName { get; private set; }
 
     public Email Email { get; private set; }
     public string IdentityId { get; private set; }

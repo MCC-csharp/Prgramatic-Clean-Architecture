@@ -110,3 +110,4 @@ TestResults/
 /Bookify/Bookify.Domaine.UnitTests/bin/Debug/net8.0/Bookify.Domain.pdb
 /Bookify/Bookify.Domaine.UnitTests/obj/project.assets.json
 /Bookify/Bookify.Domaine.UnitTests/obj/project.nuget.cache
+/Bookify/.vs/Bookify/DesignTimeBuild/.dtbcache.v2
