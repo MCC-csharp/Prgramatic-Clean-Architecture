@@ -10,6 +10,7 @@
     <DockerServiceName>bookify.api</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="AssemblyInfo.cs" />
     <None Include="docker-compose.override.yml">
       <DependentUpon>docker-compose.yml</DependentUpon>
     </None>

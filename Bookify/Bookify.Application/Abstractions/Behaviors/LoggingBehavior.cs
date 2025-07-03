@@ -2,29 +2,48 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Bookify.Application.Abstractions.Behaviors
+namespace Bookify.Application.Abstractions.Behaviors;
+
+public class LoggingBehavior<TRequest, TResponse>(ILogger<TRequest> logger) : IPipelineBehavior<TRequest, TResponse>
+where TRequest : IBaseCommand
 {
-    public class LoggingBehavior<TRequest, TResponse>(ILogger<TRequest> logger) : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : IBaseCommand
+    private readonly ILogger<TRequest> _logger = logger;
+
+    private readonly Action<ILogger, string, Exception?> _executingCommand =
+        LoggerMessage.Define<string>(
+            LogLevel.Information,
+            new EventId(1, "ExecutingCommand"),
+            "Executing command {Command}");
+
+    private readonly Action<ILogger, string, Exception?> _commandExecuted =
+        LoggerMessage.Define<string>(
+            LogLevel.Information,
+            new EventId(2, "CommandExecuted"),
+            "Command {Command} executed successfully");
+
+    private readonly Action<ILogger, string, Exception?> _commandFailed =
+        LoggerMessage.Define<string>(
+            LogLevel.Error,
+            new EventId(3, "CommandFailed"),
+            "Command {Command} processing failed");
+
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
-        private readonly ILogger<TRequest> _logger = logger;
+        ArgumentNullException.ThrowIfNull(next);
+        ArgumentNullException.ThrowIfNull(request);
 
-        public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+        string name = request.GetType().Name;
+        try
         {
-            var name = request.GetType().Name;
-
-            try
-            {
-                _logger.LogInformation("Executing command {Command}", name);
-                var result = await next();
-                _logger.LogInformation("Command {Command} executed successfully", name);
-                return result;
-            }
-            catch (Exception exception)
-            {
-                _logger.LogError(exception, "Command {Command} processing failed", name);
-                throw;
-            }
+            _executingCommand(_logger, name, null);
+            TResponse? result = await next(cancellationToken).ConfigureAwait(false);
+            _commandExecuted(_logger, name, null);
+            return result;
+        }
+        catch (Exception exception)
+        {
+            _commandFailed(_logger, name, exception);
+            throw;
         }
     }
 }

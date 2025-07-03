@@ -1,7 +1,8 @@
 ﻿using Bookify.Domain.Abstractions;
 using Bookify.Domain.Apartments;
 using Bookify.Domain.Bookings.Events;
-using Bookify.Domain.Shared;
+using Bookify.Domain.Bookings.Pricing;
+using Bookify.Domain.DomainShared;
 
 namespace Bookify.Domain.Bookings;
 
@@ -40,17 +41,17 @@ public sealed class Booking : Entity
 
     public Guid UserId { get; private set; }
 
-    public DateRange Duration { get; private set; }
+    public DateRange Duration { get; private set; } = default!;
 
-    public Money PriceForPeriod { get; private set; }
+    public Money PriceForPeriod { get; private set; } = default!;
 
-    public Money CleaningFee { get; private set; }
+    public Money CleaningFee { get; private set; } = default!;
 
-    public Money AmenitiesUpCharge { get; private set; }
+    public Money AmenitiesUpCharge { get; private set; } = default!;
 
-    public Money TotalPrice { get; private set; }
+    public Money TotalPrice { get; private set; } = default!;
 
-    public BookingStatus Status { get; private set; }
+    public BookingStatus Status { get; private set; } = default!;
 
     public DateTime CreatedOnUtc { get; private set; }
 
@@ -69,7 +70,9 @@ public sealed class Booking : Entity
         DateTime utcNow,
         PricingService pricingService)
     {
-        var pricingDetails = pricingService.CalculatePrice(apartment, duration);
+        ArgumentNullException.ThrowIfNull(apartment);
+        ArgumentNullException.ThrowIfNull(pricingService);
+        PricingDetails pricingDetails = pricingService.CalculatePrice(apartment, duration);
 
         var booking = new Booking(
             Guid.NewGuid(),
@@ -80,10 +83,10 @@ public sealed class Booking : Entity
             pricingDetails.CleaningFee,
             pricingDetails.AmenitiesUpCharge,
             pricingDetails.TotalPrice,
-            BookingStatus.Reserved,
+            BookingStatus.PendingReservation,
             utcNow);
 
-        booking.RaiseDomainEvent(new BookingReservedDomainEvent(booking.Id));
+        booking.AddDomainEvent(new BookingReservedDomainEvent(booking.Id));
 
         apartment.LastBookedOnUtc = utcNow;
 
@@ -92,7 +95,7 @@ public sealed class Booking : Entity
 
     public Result Confirm(DateTime utcNow)
     {
-        if (Status != BookingStatus.Reserved)
+        if (Status != BookingStatus.PendingReservation)
         {
             return Result.Failure(BookingErrors.NotReserved);
         }
@@ -100,14 +103,14 @@ public sealed class Booking : Entity
         Status = BookingStatus.Confirmed;
         ConfirmedOnUtc = utcNow;
 
-        RaiseDomainEvent(new BookingConfirmedDomainEvent(Id));
+        AddDomainEvent(new BookingConfirmedDomainEvent(Id));
 
         return Result.Success();
     }
 
     public Result Reject(DateTime utcNow)
     {
-        if (Status != BookingStatus.Reserved)
+        if (Status != BookingStatus.PendingReservation)
         {
             return Result.Failure(BookingErrors.NotReserved);
         }
@@ -115,7 +118,7 @@ public sealed class Booking : Entity
         Status = BookingStatus.Rejected;
         RejectedOnUtc = utcNow;
 
-        RaiseDomainEvent(new BookingRejectedDomainEvent(Id));
+        AddDomainEvent(new BookingRejectedDomainEvent(Id));
 
         return Result.Success();
     }
@@ -130,7 +133,7 @@ public sealed class Booking : Entity
         Status = BookingStatus.Completed;
         CompletedOnUtc = utcNow;
 
-        RaiseDomainEvent(new BookingCompletedDomainEvent(Id));
+        AddDomainEvent(new BookingCompletedDomainEvent(Id));
 
         return Result.Success();
     }
@@ -152,7 +155,7 @@ public sealed class Booking : Entity
         Status = BookingStatus.Cancelled;
         CancelledOnUtc = utcNow;
 
-        RaiseDomainEvent(new BookingCancelledDomainEvent(Id));
+        AddDomainEvent(new BookingCancelledDomainEvent(Id));
 
         return Result.Success();
     }

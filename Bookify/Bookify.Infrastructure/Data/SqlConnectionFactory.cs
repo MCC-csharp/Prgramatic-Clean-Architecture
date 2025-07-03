@@ -1,24 +1,18 @@
-﻿using Bookify.Application.Abstractions.Data;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
+using Bookify.Application.Abstractions.Data;
 
-namespace Bookify.Infrastructure.Data
+namespace Bookify.Infrastructure.Data;
+
+internal sealed class SqlConnectionFactory(string connectionString) : ISqlConnectionFactory
 {
-    internal sealed class SqlConnectionFactory(string connectionString) : ISqlConnectionFactory
+    private readonly string _connectionString = connectionString;
+
+    public IDbConnection CreateConnection()
     {
-        private readonly string _connectionString = connectionString;
-
-        public IDbConnection CreateConnection()
-        {
-            var connection = new Npgsql.NpgsqlConnection(_connectionString);
-            connection.Open();
+        var connection = new Npgsql.NpgsqlConnection(_connectionString);
+        connection.Open();
 
 
-            return connection;
-        }
+        return connection;
     }
 }

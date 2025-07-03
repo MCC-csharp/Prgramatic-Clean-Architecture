@@ -4,38 +4,37 @@ using FluentAssertions;
 using Xunit;
 
 
-namespace Bookify.Domaine.UnitTests.Users
+namespace Bookify.Domain.UnitTests.Users;
+
+public class UserTests
 {
-    public class UserTests
+    [Fact]
+    public void Create_Should_SetPropertyValues()
     {
-        [Fact]
-        public void Create_Should_SetPropertyValues()
-        {
-            // Act
-            var user = User.Create(UserData.FirstName,
-                UserData.LastName,
-                UserData.Email
-            );
+        // Act
+        var user = User.Create(UserData.FirstName,
+            UserData.LastName,
+            UserData.Email
+        );
 
-            // Assert
-            user.FirstName.Should().Be(UserData.FirstName);
-            user.LastName.Should().Be(UserData.LastName);
-            user.Email.Should().Be(UserData.Email);
-        }
-
-        [Fact]
-        public void Create_Should_RaiseUserCreatedDomainEvent()
-        {
-            // Act
-            var user = User.Create(UserData.FirstName,
-                UserData.LastName,
-                UserData.Email
-            );
-            // Assert
-            var domainEvent = user.GetDomainEvents().OfType<UserCreatedDomainEvent>().SingleOrDefault();
-            domainEvent.Should().NotBeNull();
-            domainEvent.UserId.Should().Be(user.Id);
-        }
-
+        // Assert
+        user.FirstName.Should().Be(UserData.FirstName);
+        user.LastName.Should().Be(UserData.LastName);
+        user.Email.Should().Be(UserData.Email);
     }
+
+    [Fact]
+    public void Create_Should_RaiseUserCreatedDomainEvent()
+    {
+        // Act
+        var user = User.Create(UserData.FirstName,
+            UserData.LastName,
+            UserData.Email
+        );
+        // Assert
+        UserCreatedDomainEvent? domainEvent = user.GetDomainEvents().OfType<UserCreatedDomainEvent>().SingleOrDefault();
+        domainEvent.Should().NotBeNull();
+        domainEvent.UserId.Should().Be(user.Id);
+    }
+
 }

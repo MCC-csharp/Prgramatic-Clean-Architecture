@@ -16,7 +16,7 @@ public record DateRange
     {
         if (start > end)
         {
-            throw new ApplicationException("End date precedes start date");
+            throw new InvalidOperationException("End date precedes start date");
         }
 
         return new DateRange

@@ -2,6 +2,7 @@
 
 public enum Amenity
 {
+    None = 0,
     WiFi = 1,
     AirConditioning = 2,
     Parking = 3,

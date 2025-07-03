@@ -34,9 +34,8 @@ public sealed class Review : Entity
 
     public Guid UserId { get; private set; }
 
-    public Rating Rating { get; private set; }
-
-    public Comment Comment { get; private set; }
+    public Rating Rating { get; private set; } = default!;
+    public Comment Comment { get; private set; } = default!;
 
     public DateTime CreatedOnUtc { get; private set; }
 
@@ -46,6 +45,11 @@ public sealed class Review : Entity
         Comment comment,
         DateTime createdOnUtc)
     {
+        if (booking is null)
+        {
+            return Result.Failure<Review>(BookingErrors.NotFound);
+        }
+
         if (booking.Status != BookingStatus.Completed)
         {
             return Result.Failure<Review>(ReviewErrors.NotEligible);
@@ -60,7 +64,7 @@ public sealed class Review : Entity
             comment,
             createdOnUtc);
 
-        review.RaiseDomainEvent(new ReviewCreatedDomainEvent(review.Id));
+        review.AddDomainEvent(new ReviewCreatedDomainEvent(review.Id));
 
         return review;
     }

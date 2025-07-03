@@ -5,6 +5,7 @@ using Bookify.Application.Abstractions.Email;
 using Bookify.Domain.Abstractions;
 using Bookify.Domain.Apartments;
 using Bookify.Domain.Bookings;
+using Bookify.Domain.Bookings.Pricing;
 using Bookify.Domain.Users;
 using Bookify.Infrastructure.Authentication;
 using Bookify.Infrastructure.Clock;
@@ -26,27 +27,26 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
+
+        ArgumentNullException.ThrowIfNull(services);
+        ArgumentNullException.ThrowIfNull(configuration);
+
         services.AddTransient<IDateTimeProvider, DateTimeProvider>();
-
         services.AddTransient<IEmailService, EmailService>();
-
         AddPersistence(services, configuration);
-
         AddAuthentication(services, configuration);
+        services.AddScoped<AmenityPricingStrategy>(sp => DefaultAmenityPricing.Evaluate);
 
         return services;
     }
 
     private static void AddPersistence(IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString =
+        string connectionString =
             configuration.GetConnectionString("Database") ??
             throw new ArgumentNullException(nameof(configuration));
 
-        services.AddDbContext<ApplicationDBContext>(options =>
-        {
-            options.UseNpgsql(connectionString).UseSnakeCaseNamingConvention();
-        });
+        services.AddDbContext<ApplicationDBContext>(options => options.UseNpgsql(connectionString).UseSnakeCaseNamingConvention());
 
         services.AddScoped<IUserRepository, UserRepository>();
 
@@ -78,17 +78,10 @@ public static class DependencyInjection
 
         services.AddHttpClient<IAuthenticationService, AuthenticationService>((serviceProvider, httpClient) =>
         {
-            var keycloakOptions = serviceProvider.GetRequiredService<IOptions<KeycloakOptions>>().Value;
+            KeycloakOptions keycloakOptions = serviceProvider.GetRequiredService<IOptions<KeycloakOptions>>().Value;
 
             httpClient.BaseAddress = new Uri(keycloakOptions.AdminUrl);
         })
             .AddHttpMessageHandler<AdminAuthorizationDelegatingHandler>();
-/*
-        services.AddHttpClient<IJwtService, JwtService>((serviceProvider, httpClient) =>
-        {
-            var keycloakOptions = serviceProvider.GetRequiredService<IOptions<KeycloakOptions>>().Value;
-
-            httpClient.BaseAddress = new Uri(keycloakOptions.TokenUrl);
-        });*/
     }
 }
