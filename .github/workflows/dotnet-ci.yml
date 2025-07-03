@@ -10,7 +10,7 @@ on:
 
 env:
   DOTNET_VERSION: "8.0.x"
-  SOLUTION_PATH: "./Bookify.sln"
+  SOLUTION_PATH: "Bookify/Bookify.sln"
 
 jobs:
   build:
