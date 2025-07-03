@@ -3,9 +3,9 @@ using Microsoft.Extensions.Options;
 
 namespace Bookify.Infrastructure.Authentication;
 
-internal sealed class JwtBearerOptionsSetup(AuthenticationOptions authenticationOptions) : IConfigureNamedOptions<JwtBearerOptions>
+internal sealed class JwtBearerOptionsSetup(IOptions<AuthenticationOptions> authenticationOptions) : IConfigureNamedOptions<JwtBearerOptions>
 {
-    private readonly AuthenticationOptions _authenticationOptions = authenticationOptions;
+    private readonly AuthenticationOptions _authenticationOptions = authenticationOptions.Value;
 
     public void Configure(string? name, JwtBearerOptions options)
     {

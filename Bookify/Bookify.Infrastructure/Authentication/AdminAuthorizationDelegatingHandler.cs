@@ -2,13 +2,14 @@
 using System.Net.Http.Json;
 using Bookify.Infrastructure.Authentication.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
 
 
 namespace Bookify.Infrastructure.Authentication;
 
-public sealed class AdminAuthorizationDelegatingHandler(KeycloakOptions keycloackOptions) : DelegatingHandler
+public sealed class AdminAuthorizationDelegatingHandler(IOptions<KeycloakOptions> keycloackOptions) : DelegatingHandler
 {
-    private readonly KeycloakOptions _keycloackOptions = keycloackOptions;
+    private readonly KeycloakOptions _keycloackOptions = keycloackOptions.Value;
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
