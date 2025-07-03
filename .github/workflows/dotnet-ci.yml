@@ -1,30 +1,38 @@
 ﻿name: .NET Build & Test
 
 on:
+  workflow_dispatch:
   push:
-    branches: [ main ]
+    branches:
+      - main
   pull_request:
     branches: [ main ]
 
+env:
+  DOTNET_VERSION: "8.0.x"
+  SOLUTION_PATH: "./Bookify.sln"
+
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - name: 🔄 Cloner le repo
-      uses: actions/checkout@v3
 
-    - name: 🧰 Installer .NET SDK
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: '8.0.x'
+      - uses: actions/checkout@v3
 
-    - name: 📦 Restaurer les dépendances
-      run: dotnet restore Bookify/Bookify.sln
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
-    - name: 🏗️ Build du projet
-      run: dotnet build Bookify/Bookify.sln --no-restore --configuration Release
+      - name: Restore
+        run: dotnet restore ${{ env.SOLUTION_PATH }}
 
-    - name: 🧪 Lancer les tests
-      run: dotnet test Bookify/Bookify.sln --no-build --configuration Release --verbosity normal
+      - name: Build
+        run: dotnet build ${{ env.SOLUTION_PATH }} --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test ${{ env.SOLUTION_PATH }} --configuration Release --no-restore --no-build
+
+      - name: Publish
+        run: dotnet publish ${{ env.SOLUTION_PATH }} --configuration Release --no-restore --no-build
