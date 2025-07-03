@@ -1,22 +1,11 @@
 <Project>
   <PropertyGroup>
-	  <SkipNugetRestore Condition="'$(IsDockerProject)' == 'true'">true</SkipNugetRestore>
-	  <SkipTargetFramework Condition="'$(IsDockerProject)' == 'true'">true</SkipTargetFramework>
-	  <EnableFrameworkPathOverride Condition="'$(IsDockerProject)' == 'true'">true</EnableFrameworkPathOverride>
     <AnalysisLevel>latest</AnalysisLevel>
     <AnalysisMode>All</AnalysisMode>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
-	<Target Name="SkipDockerProjects"
-		BeforeTargets="CollectPackageReferences"
-		Condition="'$(IsDockerProject)' == 'true'">
-		<Message Importance="high" Text="Skipping NuGet restore for Docker project: $(MSBuildProjectName)" />
-		<PropertyGroup>
-			<CollectPackageReferences>false</CollectPackageReferences>
-		</PropertyGroup>
-	</Target>
   <ItemGroup>
     <PackageReference Include="SonarAnalyzer.CSharp" Version="9.17.0.82934">
       <PrivateAssets>all</PrivateAssets>
