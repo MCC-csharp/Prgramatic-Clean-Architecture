@@ -1,9 +1,7 @@
 <Project>
   <PropertyGroup>
-	  !-- Ignorer les projets Docker dans les opérations NuGet -->
 	  <SkipNugetRestore Condition="'$(IsDockerProject)' == 'true'">true</SkipNugetRestore>
 	  <SkipTargetFramework Condition="'$(IsDockerProject)' == 'true'">true</SkipTargetFramework>
-	  <!-- Désactiver les vérifications de framework pour les projets Docker -->
 	  <EnableFrameworkPathOverride Condition="'$(IsDockerProject)' == 'true'">true</EnableFrameworkPathOverride>
     <AnalysisLevel>latest</AnalysisLevel>
     <AnalysisMode>All</AnalysisMode>
