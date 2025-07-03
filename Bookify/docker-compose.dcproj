@@ -8,6 +8,8 @@
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
     <DockerServiceName>bookify.api</DockerServiceName>
+	<SkipNugetRestore>true</SkipNugetRestore>
+	<SkipTargetFramework>true</SkipTargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <None Include="AssemblyInfo.cs" />
