@@ -62,6 +62,7 @@ public static class DependencyInjection
         SqlMapper.AddTypeHandler(new DateOnlyTypeHandler());
     }
 
+
     private static void AddAuthentication(IServiceCollection services, IConfiguration configuration)
     {
         services
@@ -82,6 +83,13 @@ public static class DependencyInjection
 
             httpClient.BaseAddress = new Uri(keycloakOptions.AdminUrl);
         })
-            .AddHttpMessageHandler<AdminAuthorizationDelegatingHandler>();
+        .AddHttpMessageHandler<AdminAuthorizationDelegatingHandler>();
+
+        services.AddHttpClient<IJwtService, JwtService>((serviceProvider, httpClient) =>
+        {
+            KeycloakOptions keycloakOptions = serviceProvider.GetRequiredService<IOptions<KeycloakOptions>>().Value;
+
+            httpClient.BaseAddress = new Uri(keycloakOptions.TokenUrl);
+        });
     }
 }
