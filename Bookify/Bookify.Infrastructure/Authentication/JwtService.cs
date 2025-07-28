@@ -5,8 +5,12 @@ using Bookify.Infrastructure.Authentication.Models;
 using Microsoft.Extensions.Options;
 
 namespace Bookify.Infrastructure.Authentication;
-internal class JwtService(HttpClient httpClient, IOptions<KeycloakOptions> keycloakOptions) : IJwtService
+internal sealed class JwtService(HttpClient httpClient, IOptions<KeycloakOptions> keycloakOptions) : IJwtService
 {
+    private static readonly Error AuthenticationFailed = new(
+    "Keycloak.AuthenticationFailed",
+    "Failed to acquire access token do to authentication failure");
+
     private readonly HttpClient _httpClient = httpClient;
     private readonly IOptions<KeycloakOptions> _keycloakOptions = keycloakOptions;
 
@@ -14,17 +18,15 @@ internal class JwtService(HttpClient httpClient, IOptions<KeycloakOptions> keycl
     {
         try
         {
-            var authRequestParameters = new KeyValuePair<string, string>[]
-            {
-            new("client_id", _keycloakOptions.Value.AuthClientId),
-            new("client_secret", _keycloakOptions.Value.AuthClientSecret),
-            new("scope", "openid email"),
-            new("grant_type", "password"),
-            new("username", email),
-            new("password", password)
-            };
-
-            var authorizationRequestContent = new FormUrlEncodedContent(authRequestParameters);
+            using var authorizationRequestContent = new FormUrlEncodedContent(
+            [
+                new("client_id", _keycloakOptions.Value.AuthClientId),
+                new("client_secret", _keycloakOptions.Value.AuthClientSecret),
+                new("scope", "openid email"),
+                new("grant_type", "password"),
+                new("username", email),
+                new("password", password)
+            ]);
 
             HttpResponseMessage response = await _httpClient.PostAsync("", authorizationRequestContent, cancellationToken);
             response.EnsureSuccessStatusCode();
@@ -42,6 +44,4 @@ internal class JwtService(HttpClient httpClient, IOptions<KeycloakOptions> keycl
             return Result.Failure<string>(AuthenticationFailed);
         }
     }
-
-
 }

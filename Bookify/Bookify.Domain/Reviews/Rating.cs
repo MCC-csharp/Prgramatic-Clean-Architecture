@@ -4,7 +4,7 @@ namespace Bookify.Domain.Reviews;
 
 public sealed record Rating
 {
-    public static readonly DomainError Invalid = new("Rating.Invalid", "The rating is invalid");
+    public static readonly Error Invalid = new("Rating.Invalid", "The rating is invalid");
 
     private Rating(int value) => Value = value;
 
